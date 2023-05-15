@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using ProEventos.API.Data;
 
 namespace ProEventos.API
 {
@@ -18,7 +20,7 @@ namespace ProEventos.API
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            Configuration = configuration; //Acessa o appsettings
         }
 
         public IConfiguration Configuration { get; }
@@ -27,11 +29,15 @@ namespace ProEventos.API
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddDbContext<DataContext>(
+                context => context.UseSqlite(Configuration.GetConnectionString("Default"))
+            ); //Criar um construtor dentro do DataContext para receber 
+            
             services.AddControllers(); //Trabalhando com arquitetura MVC
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProEventos.API", Version = "v1" });
-            });
+            });  
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
