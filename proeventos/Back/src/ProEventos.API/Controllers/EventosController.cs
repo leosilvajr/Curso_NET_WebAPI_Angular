@@ -12,11 +12,11 @@ namespace ProEventos.API.Controllers
     [ApiController]
     [Route("api/[controller]")]
     //https://localhost:5001/api/evento
-    public class EventoController : ControllerBase
+    public class EventosController : ControllerBase
     {
 
         private readonly DataContext _context;
-        public EventoController(DataContext context )
+        public EventosController(DataContext context )
         {
             _context = context;
         }
