@@ -1,19 +1,33 @@
 <h2>Eventos</h2>
 <hr/>
 
-<form action="" class="form-inline">
-  <div class="form-group mb-2 d-flex align-items-center">
-    <input type="text" class="form-control mr-2" style="width: 350px;" placeholder="Buscar">
-    <button class="btn btn-success">Buscar</button>
+<div class="form-inline">
+  <div class="form-group mb-2 align-items-center"  style="width: 350px;">
+    <label class="mr-2">Filtro:</label>
+    <div class="input-group">
+      <input
+      type="text"
+       class="form-control"
+       placeholder="Buscar"
+       [(ngModel)]="filtroLista"
+       >
+    </div>
   </div>
-</form>
-
+</div>
+<!-- <h3>Filtro: {{filtroLista}}</h3> -->
 
 <table class="table">
   <thead class="table-dark">
     <tr>
-      <th>#</th>
-      <th>Image</th>
+      <th>
+        <button type="button" class="btn btn-outline-light"
+        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+        (click)="alterarImagem()">
+        {{!mostrarImagem ? 'Mostrar' : 'Ocultar'}}
+
+      </button>
+    </th>
+      <th>Cod.</th>
       <th>Tema</th>
       <th>Local</th>
       <th>Data</th>
@@ -22,16 +36,49 @@
       <th>Opções</th>
     </tr>
   </thead>
-  <tbody>
-    <tr *ngFor="let evento of eventos">
+  <!-- Condiçao Se o evento existir preencha os td -->
+  <tbody *ngIf="eventos && eventos.length" >
+    <tr *ngFor="let evento of eventosFiltrados">
+      <td>
+        <img [collapse]="!mostrarImagem"
+        [isAnimated]="true"
+          src="../../assets/{{evento.imagemURL}}"
+          [style.width.px] = "larguraImagem"
+          [style.margin.px] = "magemImagem"
+          Propriedade Binding
+         >
+         <!-- Propriedade Binding  -->
+      </td>
       <td>{{evento.eventoId}}</td>
-      <td>{{evento.imagemURL}}</td>
       <td>{{evento.tema}}</td>
       <td>{{evento.local}}</td>
-      <td>{{evento.data}}</td>
+      <td>{{evento.dataEvento}}</td>
       <td>{{evento.qtdPessoas}}</td>
-      <td>{{evento.local}}</td>
-      <td></td>
+      <td>{{evento.lote}}</td>
+      <td>
+        <button type="button" class="btn btn-primary btn-sm">Editar</button>
+        <button type="button" class="btn btn-danger btn-sm m-2">Excluir</button>
+      </td>
+
     </tr>
   </tbody>
+  <tfoot *ngIf="!eventos && !eventos.length">
+    <tr>
+      <td colspan="8" class="text-center">
+        <h4>Nenhum evento encontrado</h4>
+      </td>
+    </tr>
+  </tfoot>
 </table>
+
+<!-- Diretivas Estruturais
+  *ngIf
+  *ngFor
+  *ngShow
+  Permite usar Binding e Interpolações
+  Exemplo:
+  {{eventos[0].imagemURL}}
+  {{1+1}}
+  {{eventos | json }}
+-->
+
