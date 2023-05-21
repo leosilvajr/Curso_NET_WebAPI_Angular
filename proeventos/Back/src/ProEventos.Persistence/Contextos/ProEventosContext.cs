@@ -25,6 +25,16 @@ namespace ProEventos.Persistence.Contextos
             //Determinando que quando a classe PalestranteEvento for criada, sera relizada a junção entre EventoId e PalestranteId
             modelBuilder.Entity<PalestranteEvento>()
                                         .HasKey(PE => new {PE.EventoId , PE.PalestranteId});
+
+            modelBuilder.Entity<Evento>()   
+                                    .HasMany(e => e.RedeSociais)                  
+                                    .WithOne(rs => rs.Evento) //Ao deletear evento que possui rede social, faça um cascade
+                                    .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Palestrante>()   
+                        .HasMany(e => e.RedeSociais)                  
+                        .WithOne(rs => rs.Palestrante) //Ao deletear um palestrante que possui rede social, faça um cascade e deleta as redes sociais tbm
+                        .OnDelete(DeleteBehavior.Cascade);                        
         }
     }
 }

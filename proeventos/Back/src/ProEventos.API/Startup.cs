@@ -5,7 +5,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using ProEventos.Application;
+using ProEventos.Application.Contratos;
+using ProEventos.Persistence;
 using ProEventos.Persistence.Contextos;
+using ProEventos.Persistence.Contratos;
 
 namespace ProEventos.API
 {
@@ -26,7 +30,16 @@ namespace ProEventos.API
                 context => context.UseSqlite(Configuration.GetConnectionString("Default"))
             ); //Criar um construtor dentro do DataContext para receber 
             
-            services.AddControllers(); //Trabalhando com arquitetura MVC
+            services.AddControllers() //Trabalhando com arquitetura MVC
+                    .AddNewtonsoftJson( x => x.SerializerSettings.ReferenceLoopHandling =
+                        Newtonsoft.Json.ReferenceLoopHandling.Ignore);//Com isso vamos ignorar os Loopings 
+
+
+            //INJEÇÃO DE DEPENDENCIA
+            //Toda as vezesq que for requisitado um IEventoService, Injete o EventoService
+            services.AddScoped<IEventoService, EventoService>();
+            services.AddScoped<IGeralPersist, GeralPersist>();
+            services.AddScoped<IEventoPersist, EventoPersist>();
 
             services.AddCors();
 

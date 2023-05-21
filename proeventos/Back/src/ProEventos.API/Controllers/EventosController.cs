@@ -16,6 +16,7 @@ namespace ProEventos.API.Controllers
     public class EventosController : ControllerBase
     {
         public readonly IEventoService _eventoService;
+        //Injeção de Dependencia.
         public EventosController(IEventoService eventoService)
         {
             _eventoService = eventoService;
