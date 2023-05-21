@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ProEventos.Domain;
 
-namespace ProEventos.Persistence
+namespace ProEventos.Persistence.Contextos
 {
     //Contexto ultilizado para a criaçao de eventos do nosso banco de dados.
 
